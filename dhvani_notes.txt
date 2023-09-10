@@ -1,0 +1,34 @@
+Project 1 : 
+Finding defect in the image given
+
+For this project open cv library is used as it gives accurate results because its built with convolutional neural network.
+Read the image 
+get the centre value of the image
+detect the outer circle and inner circle of the donut image:
+
+ - apply gaussian blur to reduce noise.
+   1) gausianblur is used to reduce noise in the picture.9,9 is the size of the gausian kernel. gausian kernel is a matrix used to perform blur operations.9 x 9 means blur operation consider this pixels neighbourhood when calculating new pixels.large kernels gives strong smoothing.
+   
+   2) 2 in GaussianBlur determines the standard deviation of Gaussian Distribution. less vallue gives less blurring.
+
+ - Using Hough Circle Transform to detect circles.
+   1) opencv has Hough Gradient which uses gradient edges
+   2) dp : ratio of resolution of original image to the accumulator matrix.
+   3) minDist : controls the minimum distance between detected circles
+   4) Param1: Canny edge detection requires two parameters — minVal and maxVal. Param1 is the higher threshold of the two. The second one is set as Param1/2.
+   5)Param2: This is the accumulator threshold for the candidate detected circles. By increasing this threshold value, we can ensure that only the best circles, corresponding to larger accumulator values, are returned.
+   6)minRadius: Minimum circle radius.
+   7)maxRadius: Maximum circle radius.
+
+Now that we detected the circle . The next step is to convert the region outside the detected circle to black pixels.
+Now the entire image is black with only inner region in white. lets calculate the white pixels using numpy.
+
+After determining black pixels and white pixels of a good image compare that with the defect image and find the difference.
+
+The difference image is calculated using absdiff from cv2.
+A threshold value is set to the difference image, which means an intensity difference greater than 50 will be considered as difference and will be set to maximum intensity value of 255[white] in the thresholded image.
+And any pixel with a difference less than threshold will be set to 0[black]
+
+ The [1] indexing is used to get the thresholded image from the result of cv2.threshold.
+
+ defective_pixel_count, counts the number of defective pixels in the thresholded image. it calculates sum of all pixels with intensity value of 255[white] to determine "good" or"defect" image.when defective_pixel_count exceeds 1000 it is classified as defective image.
